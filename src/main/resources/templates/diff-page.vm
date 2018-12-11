@@ -1,0 +1,63 @@
+#* @vtlvariable name="action" type="com.kshch.confluence.plugins.diff.page.action.DiffPageAction" *#
+#requireResourcesForContext("pagediffs")
+
+#macro (diffBody)
+<body>
+<div class="diff-menu">
+    <h2 class="diff-title">$action.getText("diff.page.title")</h2>
+    <div class="page-navigation section">
+        <div class="old page-version article">
+            <h3 class="version-title">
+                <a class="page version-navigation view-historical-version-trigger" href="$action.getBootstrapManager().getWebAppContextPath()/pages/viewpage.action?pageId=$action.getSourcePageId()">
+                    <span class="version">$action.getSourcePageTitle()</span>
+                </a>
+            </h3>
+        </div>
+        <div class="new page-version article">
+            <h3 class="version-title">
+                <a class="page version-navigation view-historical-version-trigger" href="$action.getBootstrapManager().getWebAppContextPath()/pages/viewpage.action?pageId=$action.getDestinationPageId()">
+                    <span class="version">$action.getDestinationPageTitle()</span>
+                </a>
+            </h3>
+        </div>
+    </div>
+    <div class="legend">
+        <h2 class="legend-title">$action.getText("heading.key")</h2>
+        <ul>
+            <li><span class="diff-html-added">$action.getText("these.lines.were.added")</span></li>
+            <li><span class="diff-html-removed">$action.getText("these.lines.were.removed")</span></li>
+            <li><span class="diff-html-changed">$action.getText("this.content.was.modified")</span></li>
+        </ul>
+    </div>
+</div>
+
+<div id="page-diffs" class="wiki-content">
+    #set($diffWithHtml = $action.getDiff())
+	    $diffWithHtml
+</div>
+</body>
+#end
+
+<html>
+<head>
+    <title>$action.getText("diff.page.title")</title>
+    <meta name="decorator" content="atl.general"/>
+</head>
+#applyDecorator("root")
+    #decoratorParam("helper" $action.getHelper())
+    #decoratorParam("mode" "diff-page")
+    #decoratorParam("context" "page")
+
+    #if ($action.getDiff())
+        #diffBody()
+    #else
+    <div class="aui-message aui-message-error">
+        <p class="title">
+            <strong>$action.getText("diff.page.error")</strong>
+        </p>
+        <p>$action.getText("diff.page.error.message")</p>
+    </div>
+    #end
+#end
+</html>
+

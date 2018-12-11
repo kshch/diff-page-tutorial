@@ -1,0 +1,38 @@
+#* @vtlvariable name="action" type="com.kshch.confluence.plugins.diff.page.action.DiffPagePopupAction" *#
+<section role="dialog" id="diff-page-popup" class="aui-layer aui-dialog2 aui-dialog2-medium" aria-hidden="true"
+         data-aui-remove-on-hide="true">
+    <form action="$action.getBootstrapManager().getWebAppContextPath()/plugins/diffPage/diffPage.action" method="get" class="aui">
+        <header class="aui-dialog2-header">
+            <h2 class="aui-dialog2-header-main">$action.getText("diff.page.popup.title")</h2>
+            <a class="aui-dialog2-header-close">
+                <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">$action.getText("diff.page.popup.close")</span>
+            </a>
+        </header>
+
+        <div class="aui-dialog2-content" id="diff-page-popup-binder">
+
+            <input type="hidden" name="sourcePageId" value="$action.getSourcePageId()">
+
+            <div class="field-group">
+                <label for="diff-page-space">$action.getText("diff.page.popup.space")</label>
+                <input class="text autocomplete-space" type="text" id="diff-page-space"
+                       name="spaceKey" data-max="10" data-none-message="$action.getText("diff.page.popup.no.result")"
+                       placeholder="$action.getText("diff.page.popup.select.space")" value="$action.getSpaceKey()" data-template="{key}">
+            </div>
+
+            <div class="field-group">
+                <label for="select-destination-page">$action.getText("diff.page.popup.page")</label>
+                <input type="text" class="text autocomplete-page" name="destinationPageName" data-max="10"
+                       placeholder="$action.getText("diff.page.popup.select.page")" data-none-message="$action.getText("diff.page.popup.no.result")">
+
+            </div>
+        </div>
+
+        <footer class="aui-dialog2-footer">
+            <div class="aui-dialog2-footer-actions">
+                <button id="dialog-diff-button" class="aui-button aui-button-primary">$action.getText("diff.page.popup.diff")</button>
+            </div>
+            <div class="aui-dialog2-footer-hint">$action.getText("diff.page.popup.footer.hint")</div>
+        </footer>
+    </form>
+</section>

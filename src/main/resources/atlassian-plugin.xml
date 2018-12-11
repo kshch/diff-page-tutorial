@@ -1,0 +1,55 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="diff-page"/>
+
+    <!-- add our web resources -->
+    <web-resource key="diff-page-resources" name="diff-page Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+
+        <resource type="download" name="diff-page.css" location="/css/diff-page.css"/>
+        <resource type="download" name="diff-page.js" location="/js/diff-page.js"/>
+        <resource type="download" name="images/" location="/images"/>
+
+        <context>diff-page</context>
+    </web-resource>
+
+    <web-resource key="diff-page-popup-resources" name="diff-page Popup Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>com.atlassian.auiplugin:dialog2</dependency>
+
+        <resource type="download" name="diff-page-popup.js" location="/js/diff-page-popup.js"/>
+
+        <context>page</context>
+    </web-resource>
+
+    <web-item key="diff-page-menu" name="Diff Page" section="system.content.action/secondary" weight="300">
+        <description>Add diff item to drop-down menu</description>
+        <label key="diff.page.menu.name"/>
+        <link linkId="diff-page">/plugins/diffPage/diffPagePopup.action?spaceKey=${space.key}&amp;sourcePageId=${page.id}</link>
+        <condition class="com.atlassian.confluence.plugin.descriptor.web.conditions.HasPageCondition"/>
+    </web-item>
+
+    <xwork name="Diff Page Action" key="diff-page-action">
+        <description>Diff page action</description>
+        <package name="diff-page-package" extends="default" namespace="/plugins/diffPage">
+            <default-interceptor-ref name="defaultStack"/>
+            <action name="diffPage"
+                    class="com.kshch.confluence.plugins.diff.page.action.DiffPageAction">
+                <result name="success" type="velocity">/templates/diff-page.vm</result>
+            </action>
+            <action name="diffPagePopup"
+                    class="com.kshch.confluence.plugins.diff.page.action.DiffPagePopupAction">
+                <result name="success" type="velocity">/templates/diff-page-popup.vm</result>
+            </action>
+        </package>
+    </xwork>
+
+</atlassian-plugin>
